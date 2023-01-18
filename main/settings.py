@@ -15,6 +15,8 @@ import dj_database_url
 from decouple import config
 from pathlib import Path
 
+from pythonjsonlogger.jsonlogger import JsonFormatter
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io', 'b05d-212-42-103-138.ngrok.io', '34.107.6.37']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '35.207.125.163']
 
 
 # Application definition
@@ -165,6 +167,19 @@ CORS_ALLOWED_ORIGINS = [
     'http://b05d-212-42-103-138.ngrok.io',
 ]
 
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+BROKER_TRANSPORT = 'redis'
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    }
+}
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -174,36 +189,31 @@ LOGGING = {
     'disable_existing_loggers': False,
 
     'formatters': {
-        'main': {
-            'format': '{levelname} --{asctime} -- {module} --{message}',
+        'main_format': {
+            'format': '{levelname} --{asctime} -- {module} --{message}--{filename}',
             'style': '{'
+        },
+        'json_formatter': {
+            '()': JsonFormatter,
         }
     },
 
     'handlers': {
         'my_console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'main'
+            'formatter': 'main_format'
         },
         'file': {
             'class': 'logging.FileHandler',
             'filename': 'info.log',
-            'formatter': 'main',
+            'formatter': 'main_format',
         },
-        'for_product': {
-            'class': 'logging.FileHandler',
-            'filename': 'product.log',
-            'formatter': 'main',
-        }
+
     },
     'loggers': {
         '': {
             'handlers': ['my_console', 'file']
         },
-        'product.views': {
-            'handlers': ['for_product']
-        }
-
         }
     }
 
