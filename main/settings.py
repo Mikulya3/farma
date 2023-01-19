@@ -17,6 +17,8 @@ from pathlib import Path
 
 from pythonjsonlogger.jsonlogger import JsonFormatter
 
+from main.logging_formatters import CustomJsonFormatter
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,6 +49,8 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'corsheaders',
+
     # app
     'applications.account',
     'applications.feedback',
@@ -56,8 +60,15 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,6 +148,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
@@ -156,15 +168,15 @@ AUTH_USER_MODEL = 'account.CustomUser'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://b05d-212-42-103-138.ngrok.io',
-    'http://b05d-212-42-103-138.ngrok.io',
+    # 'https://b05d-212-42-103-138.ngrok.io',
+    # 'http://b05d-212-42-103-138.ngrok.io',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://b05d-212-42-103-138.ngrok.io',
-    'http://b05d-212-42-103-138.ngrok.io',
+    # 'https://b05d-212-42-103-138.ngrok.io',
+    # 'http://b05d-212-42-103-138.ngrok.io',
 ]
 
 BROKER_URL = 'redis://127.0.0.1:6379/0'
@@ -176,6 +188,17 @@ SWAGGER_SETTINGS = {
             'type': 'apiKey',
             'in': 'header',
             'name': 'Authorization'
+        }
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+        'TIMEOUT': None,
+        'OPTIONS': {
+            'MAX_ENTRIES': 550
         }
     }
 }
@@ -194,7 +217,7 @@ LOGGING = {
             'style': '{'
         },
         'json_formatter': {
-            '()': JsonFormatter,
+            '()': CustomJsonFormatter,
         }
     },
 
@@ -206,7 +229,7 @@ LOGGING = {
         'file': {
             'class': 'logging.FileHandler',
             'filename': 'info.log',
-            'formatter': 'main_format',
+            'formatter': 'json_formatter',
         },
 
     },
