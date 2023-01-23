@@ -1,6 +1,3 @@
-import send as send
-from django.shortcuts import render
-from django.views.generic import CreateView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
