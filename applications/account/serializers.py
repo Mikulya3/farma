@@ -5,22 +5,20 @@ from applications.account.tasks import send_confirmation_email_celery, send_conf
 
 User = get_user_model()
 
-class RegisterUserSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(
+class RegisterSerializer(serializers.ModelSerializer):
+    password_confirm = serializers.CharField(
         min_length=6,
         write_only=True,
         required=True
     )
-
-
     class Meta:
         model = User
-        fields = ['email', 'password', 'password2']
+        fields = ['email', 'password', 'password_confirm']
 
 
     def validate(self, attrs):
         p1 = attrs.get('password')
-        p2 = attrs.pop('password2')
+        p2 = attrs.pop('password_confirm')
 
         if p1 != p2:
             raise serializers.ValidationError('password is wrong!')
@@ -31,7 +29,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
     def create(self,validated_data):
         user = User.objects.create_user(**validated_data)
         code = user.activation_code
-        send_confirmation_email_celery.delay(user.email,code)
+        send_confirmation_email_celery.delay(user.email, code)
         return user
 
 class ChangePasswordSerializer(serializers.Serializer):

@@ -1,14 +1,16 @@
 import random
 
-import django_filters
-from django.shortcuts import render
+from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
+from requests import Response
 from rest_framework import request
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
+
+User = get_user_model()
 
 class CategoryAPIView(ModelViewSet):
     queryset = Category.objects.all()
@@ -24,13 +26,17 @@ class ProductAPIView(ModelViewSet):
     ordering_fields = ['name', 'country', 'price', 'description']
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class RecommendationAPIView(ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
+class RecommendAPIView(ModelViewSet):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
     def get_queryset(self):
         queryset = super().get_queryset()
-        product = queryset.filter(category=self.objects.name)
-        Product = random.choices(product, k=3)
-        return Product
+        category = self.request.query_params.get('category_pk')
+        Product.objects
+        if category is not None:
+            if queryset.get(request.product.id) is category.pk:
+                result = random.choices(category.pk, k=3)
+            return result
+
+
 
