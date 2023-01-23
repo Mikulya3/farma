@@ -31,12 +31,10 @@ class RecommendAPIView(ModelViewSet):
     queryset = Product.objects.all()
     def get_queryset(self):
         queryset = super().get_queryset()
-        category = self.request.query_params.get('category_pk')
-        Product.objects
-        if category is not None:
-            if queryset.get(request.product.id) is category.pk:
-                result = random.choices(category.pk, k=3)
-            return result
+        category = Product.objects.filter('category_pk')
+        if queryset.get(request.product.id) is category.pk:
+             result = random.choices(category, k=3)
+        return result
 
 
 

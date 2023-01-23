@@ -11,7 +11,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
+    owner = models.ForeignKey(User,on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=250, verbose_name='Название')
     description = models.TextField(max_length=1000, verbose_name='Описание')
     produced_date = models.DateField(verbose_name='Дата производства')
