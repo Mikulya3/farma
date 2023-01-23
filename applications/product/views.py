@@ -29,12 +29,17 @@ class ProductAPIView(ModelViewSet):
 class RecommendAPIView(ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        print("LIST")
+        return super().list(self, request, *args, **kwargs)
+
     def get_queryset(self):
+        print("AHOIWHFOIAWHIO")
         queryset = super().get_queryset()
-        category = Product.objects.filter('category_pk')
-        if queryset.get(request.product.id) is category.pk:
-             result = random.choices(category, k=3)
-        return result
+        category = queryset.filter(category_id=1)
+        print(category)
+        return random.choices(category, k=3)
 
 
 
