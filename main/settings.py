@@ -188,13 +188,22 @@ CSRF_TRUSTED_ORIGINS = [
     # 'https://b05d-212-42-103-138.ngrok.io',
     # 'http://b05d-212-42-103-138.ngrok.io',
 ]
-
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOW_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:3001',
     'http://127.0.0.1:3000',
-    # 'https://b05d-212-42-103-138.ngrok.io',
-    # 'http://b05d-212-42-103-138.ngrok.io',
+    'http://127.0.0.1:3001',
+    'https://www.thunderclient.com',
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+    'https://www.thunderclient.com',
+]
+
 
 BROKER_URL = 'redis://127.0.0.1:6379/0'
 BROKER_TRANSPORT = 'redis'
