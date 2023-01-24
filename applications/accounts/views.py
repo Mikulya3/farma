@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from applications.account.serializers import RegisterSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, \
+from applications.accounts.serializers import RegisterSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, \
     ForgotPasswordCompleteSerializer
 
 User = get_user_model()

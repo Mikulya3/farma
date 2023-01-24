@@ -1,6 +1,6 @@
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from applications.account.tasks import send_confirmation_email_celery, send_confirmation_code_celery
+from applications.accounts.tasks import send_confirmation_email_celery, send_confirmation_code_celery
 
 
 User = get_user_model()

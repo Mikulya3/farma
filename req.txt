@@ -13,3 +13,4 @@ django-cors-headers
 pyngrok==5.0.5
 python-json-logger
 django-cors-headers
+django-allauth

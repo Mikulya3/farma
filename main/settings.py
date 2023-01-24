@@ -43,7 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     #library
     'rest_framework',
     'django_filters',
@@ -51,24 +56,24 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
 
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
     # app
-    'applications.account',
+    'applications.accounts',
     'applications.feedback',
-    'applications.order',
     'applications.product',
     'applications.spam',
 ]
 
+SITE_ID = 1
 MIDDLEWARE = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
-    'django.middleware.common.CommonMiddleware',
+
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
-    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -96,6 +101,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
+#django-allauth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -170,7 +180,7 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'account.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
@@ -192,7 +202,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_IMPORTS = ('applications.spam.tasks', 'applications.account.tasks')
+CELERY_IMPORTS = ('applications.spam.tasks', 'applications.account.tasks', 'applications.product.tasks')
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

@@ -4,10 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.apps import apps
 
-
 class UserManager(BaseUserManager):
     use_in_migrations = True
-
     def _create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given username, email, and password.
