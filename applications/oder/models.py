@@ -30,12 +30,17 @@ class Order(models.Model):
     comment = models.TextField(blank=True, null=True)
     discount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    activation_code = models.UUIDField(default=uuid.uuid4)
+    activation_code = models.CharField(max_length=40, blank=True)
 
     class Meta:
         ordering = ['pk']
     def __str__(self):
         return f'{self.products}-{self.amount}-{self.status}'
+
+    def create_activation_code(self):
+        import uuid
+        code = str(uuid.uuid4())
+        self.activation_code = code
 
     @staticmethod
     def get_balance(user: User):
@@ -56,8 +61,6 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         self.total_price = self.amount * self.products.price-self.discount
         return super().save(*args, **kwargs)
-
-
 
 
     @staticmethod

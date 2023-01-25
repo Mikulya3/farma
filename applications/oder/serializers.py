@@ -10,9 +10,15 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
+    def create_code(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        code = user.activation_code
+        send_confirmation_email(user.email, code)
+        return user
+
     def create(self, validated_data):
         amount = validated_data['amount']
-        product = validated_data['products']
+        product = validated_data['product']
         if amount > product.amount:
             raise serializers.ValidationError('no such amount!')
         if amount == 0:
@@ -22,5 +28,7 @@ class OrderSerializer(serializers.ModelSerializer):
         product.save(update_fields=['amount'])
 
         order = Order.objects.create(**validated_data)
-        send_confirmation_email(order.title.email, order.activation_code, order.product.amount, order.price)
+        send_confirmation_email(order.products.email, order.activation_code, order.product.amount, order.price)
         return order
+
+

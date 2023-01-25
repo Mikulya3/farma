@@ -22,14 +22,11 @@ class OrderAPIView(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(owner=self.request.user)
-        return queryset
 
 class OrderConfirmAPIView(APIView):
+
     def get(self, request, code):
-        order = get_object_or_404(Order, activation_code=code)
+        order = get_object_or_404(Order, code)
         if not order.is_confirm:
             order.is_confirm = True
             order.status = 'STATUS_WAITING_FOR_PAYMENT '
@@ -48,7 +45,7 @@ def cart_view(request):
     return render(request, context)
 
 class CartDeleteItemDetail(APIView):
-    def delete(self, request, pk):
+    def delete(self, request,pk):
         cart = Order.objects.get(request.user)
         items = cart.order_set.all()
         items.delete()
