@@ -24,7 +24,7 @@ class ProductAPIView(ModelViewSet):
     filterset_fields = ['category']
     search_fields = ['title', 'price', 'description']
     ordering_fields = ['title', 'country', 'price', 'description']
-    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 class RecommendAPIView(ModelViewSet):
     serializer_class = ProductSerializer

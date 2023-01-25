@@ -7,6 +7,8 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+
+from applications.accounts.serializers import RegisterSerializer
 from applications.oder.models import  Order
 from applications.oder.serializers import  OrderSerializer
 
@@ -26,6 +28,8 @@ class OrderAPIView(ModelViewSet):
 class OrderConfirmAPIView(APIView):
 
     def get(self, request, code):
+        serializer = RegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         order = get_object_or_404(Order, code)
         if not order.is_confirm:
             order.is_confirm = True
