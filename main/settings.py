@@ -238,6 +238,7 @@ CORS_ALLOW_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
+    'https://fullstackhackaton-e8324.web.app'
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -246,6 +247,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'https://www.thunderclient.com',
+    'https://fullstackhackaton-e8324.web.app'
 ]
 
 
