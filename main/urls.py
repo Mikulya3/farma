@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from django.views.generic import TemplateView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -35,6 +36,8 @@ urlpatterns = [
     path('api/v1/account/', include('applications.accounts.urls')),
     path('api/v1/spam/', include('applications.spam.urls')),
     path('api/v1/product/', include('applications.product.urls')),
+    path('api/v1/order/', include('applications.oder.urls')),
+    path('home/', TemplateView.as_view(template_name='dashboard/home.html'), name='home'),
     path('accounts/', include('allauth.urls'))
     # path('api/v1/feedback/', include('applications.feedback.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

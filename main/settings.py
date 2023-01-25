@@ -43,29 +43,76 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
     #library
+
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+    'crispy_forms',
 
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.github',
     # app
+
     'applications.accounts',
     'applications.feedback',
+    'applications.oder',
     'applications.product',
     'applications.spam',
+
 ]
 
 SITE_ID = 1
+
+#google
+#697935007647-oi9cqg063qbuvu6srbq7idhutqaruev1.apps.googleusercontent.com
+#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
+#git
+#1ddf809c6bc466803a16
+#959864380b4f01e21ff1d239d2207caa8e220eb2
+
+#django-allauth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'APP': {
+#             'client_id': '697935007647-oi9cqg063qbuvu6srbq7idhutqaruev1.apps.googleusercontent.com',
+#             'secret': '959864380b4f01e21ff1d239d2207caa8e220eb2',
+#             'key': ''
+#         }
+#     }
+# }
+LOGIN_REDIRECT_URL = 'home'
+
+ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
 
@@ -86,7 +133,7 @@ ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,6 +141,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -101,11 +149,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-#django-allauth
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -211,7 +255,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_IMPORTS = ('applications.spam.tasks', 'applications.account.tasks', 'applications.product.tasks')
+CELERY_IMPORTS = ('applications.spam.tasks', 'applications.accounts.tasks', 'applications.oder.tasks')
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
