@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
+    'crispy_forms',
     #library
 
     'rest_framework',
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+
 
     # app
 
